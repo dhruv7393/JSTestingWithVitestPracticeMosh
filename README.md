@@ -1,19 +1,29 @@
-# Mastering JavaScript Unit Testing
+#Notes -
 
-This repository contains all of the examples and exercises for my JavaScript testing course.
+### What is unit testing?
 
-* Understand the fundamentals of unit testing and its significance in JavaScript development.
-* Master the setup and usage of Vitest for effective JavaScript testing.
-* Discover the best practices for writing clean, maintainable, and trustworthy tests.
-* Learn various techniques to run and debug tests effectively.
-* Explore VSCode shortcuts to boost coding productivity.
-* Master working with matchers and crafting precise, effective assertions.
-* Practice positive, negative, and boundary testing to cover a wide range of test scenarios.
-* Break dependencies in your tests with mocks.
-* Improve code quality with static analysis, including TypeScript, ESLint, and Prettier.
-* Automate code quality checks with Husky to maintain high coding standards.
-
-
-You can find the full course at: 
-
-https://codewithmosh.com
+- A form of autmated testing where we write code to test our code.
+- **Test runner** helps to run all test
+- Helps us to
+  - identify bugs early in code.
+  - refactor (changing structure without changing behaviour)
+  - improve code quality
+  - doumentation of how code should behave
+- Fixing a bug in prod after deployment can be **5x** more expensive then coding phase
+- Types of test -> unit, integartion and end-to-end
+- Integration test deals with how different components / application work together as a whole
+- End-to-end deal with entire system simulation
+- No. of Unit test > integration > end-to-end. This is refered to as **testing pyramid**
+- **Testing framework** is a set of tools for writing and unning test. It includes -
+  - Test runner
+  - Assertion Lib
+  - Mocking Tools
+  - Test coverage tools
+  - and many other tools
+- Popular framework include -
+  - Jest
+  - Mocha
+  - Jasmine
+  - Vitest
+  - Cypress
+  - Playright

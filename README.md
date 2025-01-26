@@ -56,3 +56,15 @@ npm run test  / npm t
   2. function called by test runner
 - test/ it can be used interchangeably
 - Follow AAA(arrange-act-assert) pattern
+- A basic setup for this -
+
+```
+import { describe, test, it, expect } from "vitest";
+describe('max',()=>{
+    it('should return first number if it is greater then second',()=>{
+        //Arrange
+        //Aact
+        //Assert
+    })
+})
+```

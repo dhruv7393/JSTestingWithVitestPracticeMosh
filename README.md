@@ -68,3 +68,32 @@ describe('max',()=>{
     })
 })
 ```
+
+- Test always passes giving us the false illusion that code works is **False Positive**
+- Similaly always negative giving us the illusion of bug is **False Negative**
+- Try failing once in a while to avoid above
+
+- One advantage of vitest is ui is available
+
+```
+"test:ui": "vitest --ui"
+```
+
+```
+npm run test:ui
+```
+
+- for coveage -
+
+```
+"coverage": "vitest run --coverage"
+```
+
+- open index.html in coverage for eaasy view in browser of test covered
+
+### VSCode shortcut -
+
+- `@` can be used to go to tag after `cmd+p` and opening
+- `:` to go to a line
+- `ctrl+-` for going to previous place where cursor was
+- `ctrl+^-` for going to forward place

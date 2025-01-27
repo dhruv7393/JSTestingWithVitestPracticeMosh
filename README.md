@@ -1,99 +1,64 @@
-### What is unit testing?
+### Characteristics of good test
 
-- A form of autmated testing where we write code to test our code.
-- **Test runner** helps to run all test
-- Helps us to
-  - identify bugs early in code.
-  - refactor (changing structure without changing behaviour)
-  - improve code quality
-  - doumentation of how code should behave
-- Fixing a bug in prod after deployment can be **5x** more expensive then coding phase
-- Types of test -> unit, integartion and end-to-end
-- Integration test deals with how different components / application work together as a whole
-- End-to-end deal with entire system simulation
-- No. of Unit test > integration > end-to-end. This is refered to as **testing pyramid**
-- **Testing framework** is a set of tools for writing and running test. It includes -
-  - Test runner
-  - Assertion Lib
-  - Mocking Tools
-  - Test coverage tools
-  - and many other tools
-- Popular framework include -
-  - Jest -> most popular, setup for ECMA is experimental
-  - Mocha
-  - Jasmine
-  - Vitest -> latest, supports ecma, ts and jsx
-  - Cypress
-  - Playright
+- Maintainable
+- Robust (resilint to change in code)
+- trustworthy
+- isolated
 
-### Vitest -
+- Should have a clear name and single behaviour
+- Should be small and varible should have clear name
+- Test what function is supposed to do and not how
+- do not write against messages as the words may change
+- test boundary condition
 
-- Setting up -
+### Assertion -
 
-```
-npm i -D vitest
-```
+1. Equality -
 
-- Add to package scripts -
+- toBe for primitive e.g. num
+- toEqual for object (toBe will not compare value but its same obj)
 
-```
-"test": "vitest"
-```
+2. Truthiness -
 
-- To run -
+- toBeTruthy
+- toBeFalsy
+- toBeNull
+- toBeUndefined
+- toBeDefined
 
-```
-npm run test  / npm t
-```
+3. Numbers-
 
-- descibe - for creating test suite / group of related test
-- test - to create test case
-- it - to create test case
-- expect
+- toBeGreaterThan
+- toBeGreaterThanOrEqual
+- toBeLessThan
+- toBeLessThanOrEqual
+- toBeCloseTo ( For floats)
 
-- describe has 2 args
-  1. name of test suite - use name of function / unit under test
-  2. function called by test runner
-- test/ it can be used interchangeably
-- Follow AAA(arrange-act-assert) pattern
-- A basic setup for this -
+4. String
+
+- toMatch (some words are matched)
+
+5. Object
+
+- toMatchObject (subset of property matched)
+- toHaveProperty (if it has particular property)
+
+6. Array -
+
+- toContain - has certian values
+- toHaveLength - of length
+
+7. Exceptions-
+
+- toThrowError- if we expect function to throw exception
 
 ```
-import { describe, test, it, expect } from "vitest";
-describe('max',()=>{
-    it('should return first number if it is greater then second',()=>{
-        //Arrange
-        //Aact
-        //Assert
-    })
-})
-```
-
-- Test always passes giving us the false illusion that code works is **False Positive**
-- Similaly always negative giving us the illusion of bug is **False Negative**
-- Try failing once in a while to avoid above
-
-- One advantage of vitest is ui is available
-
-```
-"test:ui": "vitest --ui"
+expect(...).toMatch(/not found/i)
+// for regex
+i - ignore case
 ```
 
 ```
-npm run test:ui
+expect([...]).toEqual(expect.arrayContaining[1,2,3])
+- matches 1st array in any order to contain 1,2,3
 ```
-
-- for coveage -
-
-```
-"coverage": "vitest run --coverage"
-```
-
-- open index.html in coverage for eaasy view in browser of test covered
-
-### VSCode shortcut -
-
-- `@` can be used to go to tag after `cmd+p` and opening
-- `:` to go to a line
-- `ctrl+-` for going to previous place where cursor was
-- `ctrl+^-` for going to forward place

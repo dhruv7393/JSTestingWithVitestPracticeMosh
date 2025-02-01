@@ -50,6 +50,9 @@ export function isPriceInRange(price, min, max) {
 export function isValidUsername(username) {
   const minLength = 5;
   const maxLength = 15;
+  if (!username || typeof username !== "string") {
+    return false;
+  }
 
   return username.length >= minLength && username.length <= maxLength;
 }
@@ -64,7 +67,9 @@ export function canDrive(age, countryCode) {
   if (!legalDrivingAge[countryCode]) {
     return "Invalid country code";
   }
-
+  if (!age || typeof age !== "number") {
+    return "Invalid age";
+  }
   return age >= legalDrivingAge[countryCode];
 }
 
@@ -80,12 +85,13 @@ export function fetchData() {
 
 // Lesson: Setup and teardown
 export class Stack {
-  constructor() {
-    this.items = [];
+  constructor(items) {
+    this.items = items;
   }
 
   push(item) {
     this.items.push(item);
+    return this.items;
   }
 
   pop() {

@@ -1,138 +1,107 @@
-### Characteristics of good test
-
-- Maintainable
-- Robust (resilint to change in code)
-- trustworthy
-- isolated
-
-- Should have a clear name and single behaviour
-- Should be small and varible should have clear name
-- Test what function is supposed to do and not how
-- do not write against messages as the words may change
-- test boundary condition
-
-### Assertion -
-
-1. Equality -
-
-- toBe for primitive e.g. num
-- toEqual for object (toBe will not compare value but its same obj)
-
-2. Truthiness -
-
-- toBeTruthy
-- toBeFalsy
-- toBeNull
-- toBeUndefined
-- toBeDefined
-
-3. Numbers-
-
-- toBeGreaterThan
-- toBeGreaterThanOrEqual
-- toBeLessThan
-- toBeLessThanOrEqual
-- toBeCloseTo ( For floats)
-
-4. String
-
-- toMatch (some words are matched)
-
-5. Object
-
-- toMatchObject (subset of property matched)
-- toHaveProperty (if it has particular property)
-
-6. Array -
-
-- toContain - has certian values
-- toHaveLength - of length
-
-7. Exceptions-
-
-- toThrowError- if we expect function to throw exception
+- Mock function immitates behaviour of real function.
+- Meant to test unit in isolation for e.g func A calls func B, in such cases decoupling is required
+- vi.jest.mock is used to define mock func and mockReturnValue is used to define return value
+- `mockReturnValue` returns value
+- `mockResolvedValue` retuns promise that resolves to value
+- `mockImplementation` is used to define function that processes and returns
+- `toHaveBeenCalled` makes sure the function was called
+- `toHaveBeenCalledWith` makes sure the function was called but with specific arg value
+- `toHaveBeenCalledOnce` for scenario where it should only be called once
+- `mockRejectedValue` returns promise with error
 
 ```
-expect(...).toMatch(/not found/i)
-// for regex
-i - ignore case
-```
-
-```
-expect([...]).toEqual(expect.arrayContaining[1,2,3])
-- matches 1st array in any order to contain 1,2,3
-```
-
-- If you are checking for string also make sure its not empty
-- Positive testing is how well code works in normal condition and negative testing is how well app handles unexpected or incorrect input
-- `Covergae` helps to see which lines are pending
-- `Boundary Testing` is testing technique where we focus on boundaries / edges of input value eg of isPriceInRange where we make sure to check price==min and price==max in test
-- !string covers null, undefined and empty
-- `Parameterized test` are a way to run same test multiple times with different set of input data
-
-- it.each can be used for paramterized test and simplifies to great extent. To print values in it name use $ and object destructuring to get values
-
-```
-it("should return false for age less then legal driving age", () => {
-    expect(canDrive(usLegalDrivingAge - 1, "US")).toBeFalsy();
-    expect(canDrive(ukLegalDrivingAge - 1, "UK")).toBeFalsy();
+describe("Mocking practice", () => {
+  let mockfunc;
+  beforeEach(() => {
+    mockfunc = vi.fn();
   });
-  it("should return true for age more then legal driving age", () => {
-    expect(canDrive(usLegalDrivingAge + 10, "US")).toBeTruthy();
-    expect(canDrive(ukLegalDrivingAge + 10, "UK")).toBeTruthy();
+  it("mock function returns Mauli", () => {
+    mockfunc.mockReturnValue("Mauli");
+    expect(mockfunc()).toBe("Mauli");
+    expect(mockfunc).toHaveBeenCalled();
   });
-  it("should return true for age equal to legal driving age", () => {
-    expect(canDrive(usLegalDrivingAge, "US")).toBeTruthy();
-    expect(canDrive(ukLegalDrivingAge, "UK")).toBeTruthy();
+
+  it("should return Mauli on resolving", () => {
+    mockfunc.mockResolvedValue("Mauli");
+    mockfunc().then((value) => expect(value).toBe("Mauli"));
   });
-```
 
-cane be replaced with -
-
-```
-it.each([
-    { age: usLegalDrivingAge - 1, country: "US", result: false },
-    { age: usLegalDrivingAge + 10, country: "US", result: true },
-    { age: usLegalDrivingAge, country: "US", result: true },
-    { age: ukLegalDrivingAge - 1, country: "UK", result: false },
-    { age: ukLegalDrivingAge + 10, country: "UK", result: true },
-    { age: ukLegalDrivingAge, country: "UK", result: true },
-  ])("should return $result for $age, $country", ({ age, country, result }) => {
-    expect(canDrive(age, country)).toBe(result);
+  it("should return 3 on adding 1 and 2", () => {
+    mockfunc.mockImplementation((a, b) => a + b);
+    expect(mockfunc(1, 2)).toBe(3);
+    expect(mockfunc).toHaveBeenCalledOnce();
+    expect(mockfunc).toHaveBeenCalledWith(1, 2);
   });
+});
 ```
 
-- For async returning promise we use then and the parameter passed needes to be tested
+For reject -
 
 ```
-asyncFunc.then((result)=>{
-  expect(result)...
-})
-
-or we can use await
-const result = await asyncFunction()
-The test function i.e. in it needs to be marked as async
-
-if asynce retruns Promise.reject({reason: "abc"})
-use try catch to handle it
-```
-
-- We can use `beforeEach, beforAll, aterEach, afterAll` for setup. They are defined in `describe`
-
-- The following can be simplified to -
-
-```
-it("should return error on peek", () => {
+it("should return error", async () => {
+    mockfunc.mockRejectedValue(new Error("error message"));
     try {
-      let popperElement = elementsOfArray.peek();
+      await mockfunc();
     } catch (error) {
-      expect(error.message).toMatch(/empty/i);
+      expect(error.message).toMatch(/error/i);
     }
+
+    //expect(async () => await mockfunc()).rejects.toThrow(/error/i);
   });
 ```
 
+- `vi.mock(path from current place)` is used to mock module
+- `vi.mocked(func).mockReturnValue()` to mock the function in file
+
+- `Interaction testing` is meant to make sure connection between functions , `toHaveBeenCalled...` plays a major role. Mocked need not be used for this purpose
+
+- `vi.mock` replaces every fuction with `vi.fn()` to avoid this and to use original
+
 ```
-it("should return error on peek", () => {
-    expect(() => elementsOfArray.peek()).toThrow(/empty/i);
+vi.mock("../src/libs/email", async (original) => {
+  const originalFunctions = await original();
+  return {
+    ...originalFunctions,
+    sendEmail: vi.fn(),
+  };
+});
+```
+
+- To get seperately arguments of mocked fucntion use - `vi.mocked(func).mock.calls[0]`
+
+- `Spying function` is to monitor function during execution
+
+- To get value passed by called fucntion we use `spy.mock.results[0].value`. Spy takes 2 param - 1st file ref from import and 2nd the method as string
+
+```
+describe("login", () => {
+  it("should email otp", async () => {
+    const email = "dhruv7393@gmail.com";
+    const spy = vi.spyOn(security, "generateCode");
+    await login(email);
+    expect(sendEmail).toHaveBeenCalledWith(
+      email,
+      spy.mock.results[0].value.toString()
+    );
   });
+});
 ```
+
+- It is preffered to clear mock functions before/ after each test
+  `mockClear` - clears all info
+
+```
+vi.mocked(sendEmail).mockClear()
+```
+
+`mockReset` - mockClear, implementation is made empty
+`mockRestore` - mockClear, restores to original implementation
+
+- use specially with spy since vi clear and set to fn
+- for spy implementation can be changed to spy.mockImplementation
+- For multiple mock function we can use `vi.clearAllMocks()`
+
+- Configs for vitest can be added in `vitest.config.js` - refer file for info
+- Mocks should only be used with external service, db, api .. to avoid implementation related dependency
+
+- `vi.setSystemTime('yyyy-mm-dd hh:mm')` can be used to simulate system time for testing

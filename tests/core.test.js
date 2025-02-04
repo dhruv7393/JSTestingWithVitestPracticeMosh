@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, test, beforeAll } from 'vitest';
 import {
   calculateDiscount,
   canDrive,

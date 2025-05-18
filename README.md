@@ -95,5 +95,5 @@ npm run test:ui
 
 - `@` can be used to go to tag after `cmd+p` and opening
 - `:` to go to a line
-- `ctrl+-` for going to previous place where cursor was
-- `ctrl+^-` for going to forward place
+- `ctrl-` for going to previous place where cursor was
+- `ctrl+shift-` for going to forward place

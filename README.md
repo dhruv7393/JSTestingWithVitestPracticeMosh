@@ -41,7 +41,7 @@
 5. Object
 
 - toMatchObject (subset of property matched)
-- toHaveProperty (if it has particular property)
+- toHaveProperty (if it has particular property, value can be passed as second parameter for value comparison)
 
 6. Array -
 

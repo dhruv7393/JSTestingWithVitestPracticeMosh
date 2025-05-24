@@ -136,3 +136,8 @@ it("should return error on peek", () => {
     expect(() => elementsOfArray.peek()).toThrow(/empty/i);
   });
 ```
+
+To create a regular expression of string - 
+```
+const expectedResult = new RegExp(vaiable, "i"); <- will ignore case
+```

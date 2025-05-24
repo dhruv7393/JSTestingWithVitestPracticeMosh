@@ -141,3 +141,5 @@ To create a regular expression of string -
 ```
 const expectedResult = new RegExp(vaiable, "i"); <- will ignore case
 ```
+
+Do type testing only for boundary where UI can be manipulated for example username input
